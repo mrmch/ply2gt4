@@ -1,7 +1,10 @@
-from bottle import route, run, template
+import bottle
 
-@route('/:room')
+
+bottle.TEMPLATE_PATH.append('static')
+
+@bottle.route('/:room')
 def index(room=None):
-    return template('<b>Hello {{ room }}</b>!', room=room)
+    return bottle.template('index')
 
-run(host='localhost', port=8080)
+bottle.run(host='localhost', port=8080)
