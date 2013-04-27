@@ -3,7 +3,10 @@ $(document).ready(function () {
 	var usersRef = new Firebase('https://ply2gt5.firebaseio.com/rooms/' + PLY2GT4.room + '/users');
 
 	var userRef = usersRef.push();
-	userRef.set({ 'username' : 'poopfeast'});
+	userRef.set({
+		'username' : 'poopfeast',
+		'playlist' : {}
+	});
 
 
 	userRef.on('value', function(snapshot) {

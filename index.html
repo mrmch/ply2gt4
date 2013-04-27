@@ -15,11 +15,6 @@
 
         <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
 
-        <script>
-            // init gobal firebase
-            var myDataRef = new Firebase('https://ply2gt4.firebaseio.com/');
-        </script>
-
         {% raw %}
             <div ng-controller="SearchCtrl">
 
@@ -33,13 +28,11 @@
             </div>
         {% endraw %}
 
-
         <script>
             PLY2GT4 = {
                 'room': '{{ room }}'
             };
         </script>
-
 		<script src="/static/js/firebasedata.js"></script>
     </body>
 </html>
