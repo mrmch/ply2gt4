@@ -4,13 +4,13 @@
     </head>
 
     <body>
-    	Put things here? Room: {{ room }}
+    	<h1>Room: {{ room }}</h1>
 
     	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
         
         <script>
-             var myDataRef = new Firebase('https://ply2gt4.firebaseio.com/');
+             var myDataRef = new Firebase('https://ply2gt4.firebaseio.com/room/{{ room }}');
         </script>
     </body>
 </html>
