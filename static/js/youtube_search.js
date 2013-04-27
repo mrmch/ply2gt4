@@ -1,20 +1,27 @@
 // youtube auth shit
 var google_api_key = 'AIzaSyDSw1FRDGu_3-I6lmoGjAGDUMM0dOgavZc';
 
-var myDataRef = new Firebase('https://ply2gt4.firebaseio.com/');
+function SearchCtrl ($scope) {
+    $scope.run_search  = function () {
+        var q = $('#search-input').val();
+        var request = gapi.client.youtube.search.list({
+            q: q,
+            maxResults: 10,
+            part: 'snippet'
+        });
 
-// Search for a given string.
-function search () {
-    var q = $('#query').val();
-    var request = gapi.client.youtube.search.list({
-        q: q,
-        part: 'snippet'
-    });
+        request.execute(function(response) {
+            var str = '';
+            for (var i = 0; i < response.items.length; i++) {
+                str += '<li>' + response.items[i].snippet.title + '</li>';
+            }
+            $('#search-results').html(str);
+        });
+    };
 
-    request.execute(function(response) {
-        var str = JSON.stringify(response.result);
-        $('#search-container').html('<pre>' + str + '</pre>');
-    });
+    $scope.results = [
+        
+    ];
 }
 
 // Once the api loads call enable the search box.
