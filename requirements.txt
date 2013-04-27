@@ -1,3 +1,6 @@
+Jinja2==2.6
+Powerline==beta
 bottle==0.11.6
-distribute==0.6.34
+distribute==0.6.35
+jedi==0.5b5
 wsgiref==0.1.2

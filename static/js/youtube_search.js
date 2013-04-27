@@ -11,11 +11,10 @@ function SearchCtrl ($scope) {
         });
 
         request.execute(function(response) {
-            var str = '';
+            $scope.results = [];
             for (var i = 0; i < response.items.length; i++) {
-                str += '<li>' + response.items[i].snippet.title + '</li>';
+                $scope.results.append(response.items[i]);
             }
-            $('#search-results').html(str);
         });
     };
 
@@ -27,7 +26,6 @@ function SearchCtrl ($scope) {
 // Once the api loads call enable the search box.
 function handleAPILoaded () {
     $('#search-button').attr('disabled', false);
-    $('#search-button').click(function () { search(); });
 }
 
 // called once gapi client is loaded
