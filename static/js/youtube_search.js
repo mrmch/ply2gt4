@@ -24,7 +24,7 @@ function handleAPILoaded () {
 }
 
 // called once gapi client is loaded
-function load () {
+function OnLoadCallback () {
     gapi.client.setApiKey(google_api_key);
     gapi.client.load('youtube', 'v3', handleAPILoaded);
 }
