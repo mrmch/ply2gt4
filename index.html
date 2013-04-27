@@ -6,9 +6,41 @@
     <body>
     	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+        <script src="https://apis.google.com/js/client.js?onload=load"></script>
+
+        <input type="text" id="search_youtube">
 
         <script>
-             var myDataRef = new Firebase('https://ply2gt4.firebaseio.com/');
+            // youtube auth shit
+            var google_api_key = 'AIzaSyDSw1FRDGu_3-I6lmoGjAGDUMM0dOgavZc';
+
+            var myDataRef = new Firebase('https://ply2gt4.firebaseio.com/');
+
+            $(function () {
+                gapi.client.setApiKey(google_api_key);
+             
+            });
+
+
+            // Search for a given string.
+            function search () {
+                var q = $('#query').val();
+                var request = gapi.client.youtube.search.list({
+                    q: q,
+                    part: 'snippet'
+                });
+
+                request.execute(function(response) {
+                    var str = JSON.stringify(response.result);
+                        $('#search-container').html('<pre>' + str + '</pre>');
+                    });
+            }
+
+            // Once the api loads call enable the search box.
+            function handleAPILoaded () {
+                $('#search-button').attr('disabled', false);
+                $('#search-button').click(search);
+            }
         </script>
     </body>
 </html>
