@@ -13,7 +13,7 @@ function SearchCtrl ($scope) {
         request.execute(function(response) {
             $scope.results = [];
             for (var i = 0; i < response.items.length; i++) {
-                $scope.results.append(response.items[i]);
+                $scope.results.push(response.items[i]);
             }
         });
     };

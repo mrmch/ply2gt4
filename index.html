@@ -27,7 +27,7 @@
                 <button id="search-button" ng-click="runSearch()">Search</button>
 
                 <ul id="search-results" ng-repeat="result in results">
-                    {{ result.title }}
+                    {{ result.snippet.title }}
                 </ul>
             </div>
         {% endraw %}
