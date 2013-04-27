@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="ply2gt4">
     <head>
         <script src='https://cdn.firebase.com/v0/firebase.js'></script>
     </head>
@@ -18,12 +18,30 @@
         {% raw %}
             <div ng-controller="SearchCtrl">
 
-                <input type="text" id="search-input">
+                <form ng-submit="runSearch()">
+                    <input type="text" ng-model="searchText">
 
-                <button id="search-button" ng-click="runSearch()">Search</button>
+                    <input class="btn btn-primary" type="submit" value="Search"></input>
+                </form>
 
-                <ul id="search-results" ng-repeat="result in results">
-                    {{ result.snippet.title }}
+                <ul>
+                    <li ng-repeat="result in searchResults">
+                        {{ result.snippet.title }}
+
+                        <button class="btn" ng-click="addToPlaylist(result)">+</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div ng-controller="PlaylistCtrl">
+                <ul>
+                    <li ng-repeat="clip in getPlaylist()">
+                        <img src="{{ clip.snippet.thumbnails.high.url" />
+
+                        {{ clip.snippet.title }}
+
+                        <button class="btn" ng-click="removeClip(clip)">x</button>
+                    </li>
                 </ul>
             </div>
         {% endraw %}
