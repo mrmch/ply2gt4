@@ -1,4 +1,3 @@
-var roomsRef = new Firebase('https://ocf0s8prdzo.firebaseio-demo.com/rooms');
+var firebaseRef = new Firebase('https://ply2gt5.firebaseio.com/');
+var roomsRef = new Firebase('https://ply2gt5.firebaseio.com/rooms');
 
-var room = roomRef.pus();
-room.set({slug:"test"});
