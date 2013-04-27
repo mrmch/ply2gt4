@@ -2,7 +2,7 @@
 var google_api_key = 'AIzaSyDSw1FRDGu_3-I6lmoGjAGDUMM0dOgavZc';
 
 function SearchCtrl ($scope) {
-    $scope.run_search  = function () {
+    $scope.runSearch  = function () {
         var q = $('#search-input').val();
         var request = gapi.client.youtube.search.list({
             q: q,
