@@ -2,6 +2,7 @@
 <html lang="en" ng-app="ply2gt4">
     <head>
         <script src='https://cdn.firebase.com/v0/firebase.js'></script>
+        <script src='/static/js/swfobject.js'></script>
     </head>
 
     <body>
@@ -34,13 +35,20 @@
             <div ng-controller="PlaylistCtrl">
                 <ul>
                     <li ng-repeat="clip in playlist">
-                        <img src="{{ clip.snippet.thumbnails.high.url }}" />
+                        <img width="48" height="48" src="{{ clip.snippet.thumbnails.high.url }}" />
 
                         {{ clip.snippet.title }}
 
                         <button class="btn" ng-click="removeClip(clip)">x</button>
                     </li>
                 </ul>
+            </div>
+
+            <div ng-controller="PlayerCtrl">
+                <button ng-click="play()">Play</button>
+                <div id="ytapiplayer">
+                    You need Flash player 8+ and JavaScript enabled to view this video.
+                </div>
             </div>
         {% endraw %}
 
