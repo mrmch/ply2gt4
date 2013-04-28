@@ -5,23 +5,9 @@
 
     var userID = new Date().getTime();
 
-    var roomRef = new Firebase('https://ply2gt5.firebaseio.com/rooms/' + PLY2GT4.room);
-    var usersRef = new Firebase('https://ply2gt5.firebaseio.com/rooms/' + PLY2GT4.room + '/users');
-
-    var userURL = 'https://ply2gt5.firebaseio.com/rooms/' + PLY2GT4.room + '/users/' + userID;
-    var playlistURL = 'https://ply2gt5.firebaseio.com/rooms/' + PLY2GT4.room + '/users/' + userID + '/playlist';
-
-
-
-    /*
-    angular.module('phonecat', []).
-    config(['$routeProvider', function($routeProvider) {
-        $routeProvider.
-        when('/phones', {templateUrl: 'partials/phone-list.html',   controller: PhoneListCtrl}).
-        when('/phones/:phoneId', {templateUrl: 'partials/phone-detail.html', controller: PhoneDetailCtrl}).
-        otherwise({redirectTo: '/phones'});
-    }]);
-    */
+    var roomURL = 'https://ply2gt5.firebaseio.com/rooms/' + PLY2GT4.room;
+    var userURL = roomURL + '/users/' + userID;
+    var playlistURL = userURL + '/playlist';
 
     angular.module('ply2gt4', ['firebase'], function ($provide) {
         $provide.factory('playlistService', ['angularFire', function(angularFire) {
@@ -52,16 +38,8 @@
     .controller('UserCtrl', ['$scope', 'angularFire', function ($scope, angularFire) {
         var promise = angularFire(userURL, $scope, 'user', {});
         promise.then(function () { 
-            $scope.user.matt = "asdf";
-            //var userRef = usersRef.child(userID);
-            //userRef.set({
-            //    $scope.user.set({
-            //    'username' : 'poopfeast'
-            //});
-            $scope.updateUsername = function () {
-                //$scope.user.child('username').set($scope.username);
-            };
-        });
+            $scope.user.username = 'poopfeast';
+       });
     }])
 
     .controller('SearchCtrl', ['$scope', 'playlistService', function ($scope, playlistService) {
