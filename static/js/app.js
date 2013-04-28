@@ -6,9 +6,34 @@ var userID = new Date().getTime();
 //var roomRef = new Firebase('https://ply2gt5.firebaseio.com/rooms/' + PLY2GT4.room);
 //var usersRef = new Firebase('https://ply2gt5.firebaseio.com/rooms/' + PLY2GT4.room + '/users');
 
-var userURL = 'https://ply2gt4.firebaseio.com/rooms/' + PLY2GT4.room + '/users/' + userID;
-var playlistURL = 'https://ply2gt4.firebaseio.com/rooms/' + PLY2GT4.room + '/users/' + userID + '/playlist';
+var base = 'https://ply2gt4.firebaseio.com/rooms/',
+    room_url = base + PLY2GT4.room,
+    users_url = room_url + '/users/',
+    user_url = users_url + userID,
+    playlistURL = user_url + '/playlist';
 
+var room = new Firebase(room_url);
+var users = room.child('users'),
+    users_val = null;
+var user = new Firebase(user_url);
+
+var last_user = room.child('last_user'),
+    last_user_val;
+var last_user_playlist
+
+last_user.once('value', function (snapshot) {
+    if (snapshot.val() === null) {
+        last_user.set(userID);
+    }
+});
+
+last_user.on('value', function (snapshot) {
+    last_user_val = snapshot.val();
+});
+
+users.on('value', function (snapshot) {
+    users_val = snapshot.val();
+});
 
 angular.module('ply2gt4', ['firebase'], function ($provide) {
     $provide.factory('playlistService', ['angularFire', function(angularFire) {
@@ -37,7 +62,7 @@ angular.module('ply2gt4', ['firebase'], function ($provide) {
 }])
 
 .controller('UserCtrl', ['$scope', 'angularFire', function ($scope, angularFire) {
-    var promise = angularFire(userURL, $scope, 'user', {});
+    var promise = angularFire(user_url, $scope, 'user', {});
     pormiseB = promise.then(function () { 
         $scope.user.username = new Date().getTime();
     });
@@ -63,6 +88,71 @@ angular.module('ply2gt4', ['firebase'], function ($provide) {
         });
     };
 
+}])
+
+.controller('PlayerCtrl', ['$scope', '$window', 'playlistService', function ($scope, $window, playlistService) {
+    playlistService.getPlaylist($scope);
+    var params = { allowScriptAccess: "always" },
+        atts = { id: "ytapiplayer" },
+        options = 'enablejsapi=1&playerapiid=ytplayer&version=3&controls=0';
+
+
+    $scope.ytplayer = null;
+
+    $scope.currentSongID = function () {
+        var pl = users_val[last_user_val].playlist;
+
+        if (pl.len < 1) return;
+
+        return pl[0].id.videoId;
+    };
+
+    $scope.nextSong = function () {
+        if (last_user_val == userID) {
+            // increment our local  playlist
+            var last = $scope.playlist.shift();
+            $scope.playlist.push(last);
+        }
+
+        users.transaction(function (currentUsers) {
+            var last = last_user_val;
+
+            var l = 0;
+            for (key in currentUsers){ l++; }
+            users.child(last_user_val).setPriority(l + 1);
+
+            // now we find the top user
+            var toset = 0;
+            for (key in currentUsers){ toset = key; break; }
+            last_user.set(toset);
+
+            return currentUsers;
+        });
+    };
+
+    $scope.play = function () {
+        swfobject.embedSWF("http://www.youtube.com/v/" + $scope.currentSongID() + "?" + options,
+            "ytapiplayer", "425", "356", "8", null, null, params, atts);
+    };
+
+    $scope.skip = function () {
+        $scope.nextSong();
+        $scope.play();
+    };
+
+    $window.playerCtrlYTReady = function (ytplayer) {
+        $scope.ytplayer = ytplayer;
+        $scope.ytplayer.playVideo();
+    };
+
+    $window.playerCtrlYTStateChange = function (newState) {
+        console.log('new state', newState);
+        if (newState == 0) {
+            // ended
+            $scope.skip();
+        }
+    };
+
 }]);
 
 // Once the api loads call enable the search box.
@@ -76,3 +166,12 @@ function OnLoadCallback () {
     gapi.client.load('youtube', 'v3', handleAPILoaded);
 }
 
+function onYouTubePlayerReady(playerId) {
+    ytplayer = document.getElementById("ytapiplayer");
+    ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
+    window.playerCtrlYTReady(ytplayer);
+}
+
+function onytplayerStateChange(newState) {
+    window.playerCtrlYTStateChange(newState);
+}
