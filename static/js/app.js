@@ -1,13 +1,10 @@
-// youtube auth shit
-var google_api_key = 'AIzaSyDSw1FRDGu_3-I6lmoGjAGDUMM0dOgavZc';
+function AppViewModel() {
+    var self = this;
 
-var roomURL = 'https://ply2gt5.firebaseio.com/rooms/' + PLY2GT4.room;
-var usersURL = roomURL + 'users';
-var playlistURL = userURL + '/playlist';
+    self.roomName = ko.observable(PLY2GT4.room);
+    self.username = ko.observable('poopfeast');
+};
 
-angular.module('ply2gt4')
-.controller('SearchCtrl', ['$scope', 'playlistService', function ($scope, playlistService) {
-    playlistService.getPlaylist($scope);
     $scope.searchResults = [];
 
     $scope.runSearch  = function () {
@@ -26,8 +23,7 @@ angular.module('ply2gt4')
         });
     };
 
-}])
-
+/*
     var params = { allowScriptAccess: "always" },
         atts = { id: "ytapiplayer" },
         options = 'enablejsapi=1&playerapiid=ytplayer&version=3&controls=0';
@@ -57,8 +53,7 @@ angular.module('ply2gt4')
     $window.playerCtrlYTStateChange = function (newState) {
     
     };
-
-}]);
+*/
 
 // Once the api loads call enable the search box.
 function handleAPILoaded () {
@@ -80,3 +75,5 @@ function onYouTubePlayerReady(playerId) {
 function onytplayerStateChange(newState) {
     window.playerCtrlYTStateChange(newState);
 }
+
+ko.applyBindings(new AppViewModel());

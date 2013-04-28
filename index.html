@@ -6,16 +6,25 @@
     </head>
 
     <body>
-    	<h1>Room: {{ room }}</h1>
+    	<h1>ply2gt4 - <span data-bind="text: roomName"></span></h1>
 
-        <!--<div ng-controller="UserCtrl">
+        <div>
+            <label>Username:</label>
+            <input type="text" data-bind="value: username">
+        </div>
+
+        <!--
+        <div ng-controller="UserCtrl">
             <p>
                 <label>Your Username:</label><input type="text" ng-model="user.username">
             </p>
-        </div>-->
+        </div>
+    
 
         {% raw %}
             <div ng-controller="UsersCtrl">
+                <button class="btn" ng-click="removeClip(clip)">x</button>
+
                 <ul>
                     <li ng-repeat="user in users">
                         {{ user.username }}
@@ -61,15 +70,16 @@
                 </div>
             </div>
         {% endraw %}
+        -->
 
         <script>
             PLY2GT4 = {
                 'room': '{{ room }}'
             };
         </script>
+
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
-        <script src="/static/js/angularfire.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.2.0/knockout-min.js"></script>
         <script src="/static/js/app.js"></script>
         <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
     </body>
