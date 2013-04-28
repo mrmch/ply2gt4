@@ -13,9 +13,6 @@
             </p>
         </div>
 
-    	
-        
-
         {% raw %}
             <div ng-controller="SearchCtrl">
 
@@ -37,7 +34,7 @@
             <div ng-controller="PlaylistCtrl">
                 <ul>
                     <li ng-repeat="clip in playlist">
-                        <img src="{{ clip.snippet.thumbnails.high.url" />
+                        <img src="{{ clip.snippet.thumbnails.high.url }}" />
 
                         {{ clip.snippet.title }}
 
