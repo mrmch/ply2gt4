@@ -13,7 +13,7 @@ angular.module('ply2gt4', ['firebase'], function ($provide) {
             var promise = angularFire(playlistURL, $scope, 'playlist', []);
             promise.then(function () { 
                 $scope.addToPlaylist = function (clip) {
-                    $scope.playlist.push(clip);
+                    $scope.playlist.unshift(clip);
                 };
 
                 $scope.removeClip = function (clip) {
@@ -114,6 +114,40 @@ angular.module('ply2gt4', ['firebase'], function ($provide) {
         });
     };
 
+}])
+
+.controller('PlayerCtrl', ['$scope', '$window', 'playlistService', function ($scope, $window, playlistService) {
+    playlistService.getPlaylist($scope);
+    var params = { allowScriptAccess: "always" },
+        atts = { id: "ytapiplayer" },
+        options = 'enablejsapi=1&playerapiid=ytplayer&version=3&controls=0';
+
+    $scope.ytplayer = null;
+
+    $scope.currentSongID = function () {
+        if ($scope.playlist.length < 1) return;
+        return $scope.playlist[0].id.videoId;
+    };
+
+    $scope.nextSong = function () {
+        var last = $scope.playlist.shift();
+        $scope.playlist.push(last);
+    };
+
+    $scope.play = function () {
+        swfobject.embedSWF("http://www.youtube.com/v/" + $scope.currentSongID() + "?" + options,
+            "ytapiplayer", "425", "356", "8", null, null, params, atts);
+    };
+
+    $window.playerCtrlYTReady = function (ytplayer) {
+        $scope.ytplayer = ytplayer;
+        $scope.ytplayer.playVideo();
+    };
+
+    $window.playerCtrlYTStateChange = function (newState) {
+    
+    };
+
 }]);
 
 // Once the api loads call enable the search box.
@@ -127,3 +161,12 @@ function OnLoadCallback () {
     gapi.client.load('youtube', 'v3', handleAPILoaded);
 }
 
+function onYouTubePlayerReady(playerId) {
+    ytplayer = document.getElementById("ytapiplayer");
+    ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
+    window.playerCtrlYTReady(ytplayer);
+}
+
+function onytplayerStateChange(newState) {
+    window.playerCtrlYTStateChange(newState);
+}
