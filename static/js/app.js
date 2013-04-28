@@ -1,14 +1,8 @@
 // youtube auth shit
 var google_api_key = 'AIzaSyDSw1FRDGu_3-I6lmoGjAGDUMM0dOgavZc';
 
-var userID = new Date().getTime();
-
-//var roomRef = new Firebase('https://ply2gt5.firebaseio.com/rooms/' + PLY2GT4.room);
-//var usersRef = new Firebase('https://ply2gt5.firebaseio.com/rooms/' + PLY2GT4.room + '/users');
-
-
 var roomURL = 'https://ply2gt5.firebaseio.com/rooms/' + PLY2GT4.room;
-var userURL = roomURL + '/users/' + userID;
+var usersURL = roomURL + 'users';
 var playlistURL = userURL + '/playlist';
 
 angular.module('ply2gt4', ['firebase'], function ($provide) {
@@ -31,10 +25,32 @@ angular.module('ply2gt4', ['firebase'], function ($provide) {
 
         return playlistService;
     }]);
+
+    $provide.factory('usersService', ['angularFire', function(angularFire) {
+        var service = {};
+
+        service.getUserList = function ($scope) {
+            var promise = angularFire(roomURL + 'users', $scope, 'users', []);
+            promise.then(function () {
+                console.log('eventually');
+                //$scope.addUser = function () {
+                //    $scope.users.push({'username': 'poopfeast'});
+                //};
+                $scope.users.push({'username': 'pposdf'});
+            });
+            return promise;
+        };
+
+        return service;
+    }]);
 })
 
 .controller('PlaylistCtrl', ['$scope', 'playlistService', function ($scope, playlistService) {
     playlistService.getPlaylist($scope);
+}])
+
+.controller('UsersCtrl', ['$scope', 'usersService', function ($scope, usersService) {
+    usersService.getUserList($scope);
 }])
 
 .controller('UserCtrl', ['$scope', 'angularFire', function ($scope, angularFire) {
