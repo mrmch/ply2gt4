@@ -9,13 +9,9 @@
 
         <div ng-controller="UserCtrl">
             <p>
-                <label>Your Username:</label><input type="text" ng-model="username">
-                <button ng-click="updateUsername()">Save</button>
+                <label>Your Username:</label><input type="text" ng-model="user.username">
             </p>
         </div>
-
-    	
-        
 
         {% raw %}
             <div ng-controller="SearchCtrl">
@@ -38,7 +34,7 @@
             <div ng-controller="PlaylistCtrl">
                 <ul>
                     <li ng-repeat="clip in playlist">
-                        <img src="{{ clip.snippet.thumbnails.high.url" />
+                        <img src="{{ clip.snippet.thumbnails.high.url }}" />
 
                         {{ clip.snippet.title }}
 
