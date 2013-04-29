@@ -51,6 +51,19 @@
                     You need Flash player 8+ and JavaScript enabled to view this video.
                 </div>
             </div>
+
+            <div ng-controller="RoomPlaylistCtrl">
+                <ul>
+                    <li ng-repeat="user in users">
+                        <img width="64" height="64" src="{{ $parent.userNextClip(user).snippet.thumbnails.high.url }}" />
+
+                        {{ user.username }}
+                        <br>
+                        {{ $parent.userNextClip(user).title }}
+
+                    </li>
+                </ul>
+            </div>
         {% endraw %}
 
         <script>

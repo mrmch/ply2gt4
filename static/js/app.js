@@ -14,12 +14,17 @@ var base = 'https://ply2gt4.firebaseio.com/rooms/',
 
 var room = new Firebase(room_url);
 var users = room.child('users'),
-    users_val = null;
+    users_val = null,
+    room_pl = room.child('playlist'),
+    room_pl_val = null;
 var user = new Firebase(user_url);
 
 var last_user = room.child('last_user'),
     last_user_val;
 var last_user_playlist
+
+// del user on disconnect
+user.onDisconnect().remove();
 
 last_user.once('value', function (snapshot) {
     if (snapshot.val() === null) {
@@ -33,6 +38,10 @@ last_user.on('value', function (snapshot) {
 
 users.on('value', function (snapshot) {
     users_val = snapshot.val();
+});
+
+room_pl.on('value', function (snapshot) {
+    room_pl_val = snapshot;
 });
 
 angular.module('ply2gt4', ['firebase'], function ($provide) {
@@ -87,7 +96,17 @@ angular.module('ply2gt4', ['firebase'], function ($provide) {
             }
         });
     };
+}])
 
+.controller('RoomPlaylistCtrl', ['$scope', function ($scope) {
+    $scope.users = users_val;
+
+    $scope.userNextClip = function (user) {
+        int pl = user.playlist;
+        if (pl.len < 1) return;
+
+        return user.playlist[0];
+    };
 }])
 
 .controller('PlayerCtrl', ['$scope', '$window', 'playlistService', function ($scope, $window, playlistService) {
@@ -152,7 +171,6 @@ angular.module('ply2gt4', ['firebase'], function ($provide) {
             $scope.skip();
         }
     };
-
 }]);
 
 // Once the api loads call enable the search box.
