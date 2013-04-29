@@ -6,81 +6,42 @@
     </head>
 
     <body>
-    	<h1>ply2gt4 - <span data-bind="text: roomName"></span></h1>
+
+        <!-- ko if: loaded -->
+
+        <h3>ply2gt4 | <span data-bind="text: roomName"></span> | <span data-bind="text: username"></span></h3>
 
         <div>
-            <label>Username:</label>
-            <input type="text" data-bind="value: username">
+            <h1>
+                Now Playing 
+                <span data-bind="text: nowPlaying().username"></span> 
+                <span data-bind="text: nowPlaying().playitem"></span> 
+            </h1>
+            <a href="#" data-bind="click: playNext">Play Next</a>
+            <br><br>
+            <a href="#" data-bind="click: queueItem">Queue New Item</a>
         </div>
 
-        <!--
-        <div ng-controller="UserCtrl">
-            <p>
-                <label>Your Username:</label><input type="text" ng-model="user.username">
-            </p>
-        </div>
-    
-
-        {% raw %}
-            <div ng-controller="UsersCtrl">
-                <button class="btn" ng-click="removeClip(clip)">x</button>
-
-                <ul>
-                    <li ng-repeat="user in users">
-                        {{ user.username }}
-                    </li>
+        <ul data-bind="foreach: room().users">
+            <li>
+                <p data-bind="text: username"></p>
+                <ul data-bind="foreach: playlist">
+                    <li data-bind="text: playitem"></li>
                 </ul>
-            </div>
-        {% endraw %}
+            </li>
+        </ul>
 
-        {% raw %}
-            <div ng-controller="SearchCtrl">
-
-                <form ng-submit="runSearch()">
-                    <input type="text" ng-model="searchText">
-
-                    <input class="btn btn-primary" type="submit" value="Search"></input>
-                </form>
-
-                <ul>
-                    <li ng-repeat="result in searchResults">
-                        {{ result.snippet.title }}
-
-                        <button class="btn" ng-click="addToPlaylist(result)">+</button>
-                    </li>
-                </ul>
-            </div>
-
-            <div ng-controller="PlaylistCtrl">
-                <ul>
-                    <li ng-repeat="clip in playlist">
-                        <img width="48" height="48" src="{{ clip.snippet.thumbnails.high.url }}" />
-
-                        {{ clip.snippet.title }}
-
-                        <button class="btn" ng-click="removeClip(clip)">x</button>
-                    </li>
-                </ul>
-            </div>
-
-            <div ng-controller="PlayerCtrl">
-                <button ng-click="play()">Play</button>
-                <div id="ytapiplayer">
-                    You need Flash player 8+ and JavaScript enabled to view this video.
-                </div>
-            </div>
-        {% endraw %}
-        -->
+        <!-- /ko -->
 
         <script>
             PLY2GT4 = {
-                'room': '{{ room }}'
+                'room': '{{ room }}',
+                'username': '{{ username }}'
             };
         </script>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.2.0/knockout-min.js"></script>
         <script src="/static/js/app.js"></script>
-        <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
     </body>
 </html>
